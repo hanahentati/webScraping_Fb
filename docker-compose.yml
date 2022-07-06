@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  web:
+    container_name: fb_scrapping
+    build: ./
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+    environment:
+        - DB_URL= mongodb://db/TestScDB
+
+  db:
+      image: mongo
+      ports:
+          - "27017:27017"
+      volumes:
+          - TestDB:/data/db
+
+volumes:
+    TestDB:
