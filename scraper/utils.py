@@ -111,7 +111,8 @@ def get_time(post):
     """
 
     element = post.find_element(By.CSS_SELECTOR, "a.gpro0wi8.b1v8xokw")
-    return element.get_attribute('textContent')
+    posted_time = element.get_attribute('textContent')
+    return posted_time
 
 
 def get_images(post):
