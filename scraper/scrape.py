@@ -5,18 +5,15 @@ from selenium.webdriver.common.by import By
 class FacebookScrapping:
     """A class used to represent a single page scraper."""
 
-    def __init__(self, page_name: str, timeout: int):
+    def __init__(self, page_name: str):
         """
         Instantiate a FacebookScraper object.
-        Args:
-            page_name (str): the name of the page
-            timeout (int): the maximum time for scraping
         """
 
         self.driver = None
         self.page_name = page_name
         self.URL = get_full_path(page_name)
-        self.timeout = timeout
+        # self.timeout = timeout
 
     def init_driver(self):
         """ Initialize the driver """

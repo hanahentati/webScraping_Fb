@@ -8,7 +8,7 @@ from selenium.webdriver.common.by import By
 # driver = webdriver.Chrome()
 # driver.get("http://www.python.org")
 # assert "Python" in driver.title
-#
+#change the paths
 path = 'C:/Users/GMI/chromedriver.exe'
 driver = webdriver.Chrome(path)
 driver.get("https://www.facebook.com/jypnation")

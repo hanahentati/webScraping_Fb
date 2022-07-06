@@ -1,6 +1,6 @@
 import uvicorn
 from fastapi import FastAPI
-from router.router import router
+from router import router
 from fastapi.staticfiles import StaticFiles
 
 
