@@ -35,15 +35,16 @@ def initialize_driver():
 
     # enter username and password
     username.clear()
-    username.send_keys("User login")
+    username.send_keys("your login")
     password.clear()
-    password.send_keys("user password")
+    password.send_keys("your password")
 
     # target the login button and click it
     button = WebDriverWait(driver, 2).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button[type='submit']"))).click()
 
     # We are logged in!
 
+    WebDriverWait(driver, 200).until(EC.element_to_be_clickable((By.XPATH, "//div[@aria-label='Leave a comment'][@role='button']"))).click()
 
 
     return driver
@@ -75,12 +76,12 @@ def see_more_comment(driver):
     driver.execute_script("arguments[0].click();", clear_button)
     time.sleep(100)
     more_comments = driver.find_element(By.CSS_SELECTOR,"div.j83agx80.buofh1pr.jklb3kyz.l9j0dhe7")
-    for coment in more_comments:
-        text = coment.get_attribute('textContent')
-        if "more comments" in text:
-            clear_button = driver.find_element(By.XPATH, "//div[@role='button']")
-            driver.execute_script("arguments[0].click();", clear_button)
-            time.sleep(100)
+
+    text = more_comments.get_attribute('textContent')
+    if "more comments" in text:
+        clear_button = driver.find_element(By.XPATH, "//div[@role='button']")
+        driver.execute_script("arguments[0].click();", clear_button)
+        time.sleep(100)
 
 
 
@@ -106,6 +107,8 @@ def get_fullcomments(post):
         text = link.get_attribute('textContent')
 
         comments.append(text)
+
+        print(comments)
 
     except:
         text = None
