@@ -7,7 +7,7 @@ from fastapi.staticfiles import StaticFiles
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-# ================= Routers inclusion ===============
+# ================= Inclusion of the Routers===============
 app.include_router(router)
 
 
