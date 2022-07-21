@@ -62,7 +62,7 @@ body {
   .row .cell:before {
     margin-bottom: 3px;
     content: attr(data-title);
-    min-width: 98px;
+    min-width: 99px;
     font-size: 10px;
     line-height: 10px;
     font-weight: bold;

@@ -13,7 +13,6 @@ class FacebookScrapping:
         self.driver = None
         self.page_name = page_name
         self.URL = get_full_path(page_name)
-        # self.timeout = timeout
 
     def init_driver(self):
         """ Initialize the driver """
@@ -37,18 +36,14 @@ class FacebookScrapping:
             video = get_link_video(post)
             comments = get_comments(post)
             shares = get_shares(post)
-            # total_reactions = get_reactions(post)
-            # posted_time_of_cp = get_time(post)
-            full_comment= get_fullcomments(post)
+            full_comment = get_fullcomments(post)
             images = get_images(post)
 
             data[id] = {
                 "page_name": self.page_name,
                 "shares_count": shares,
                 "comments_count": comments,
-                # "reaction_count": total_reactions,
                 "content": text,
-                # "posted_on": posted_time_of_cp,
                 "full_comment": full_comment,
                 "video_link": video,
                 "image": images,

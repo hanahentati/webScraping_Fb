@@ -16,12 +16,6 @@ from selenium.webdriver.common.by import By
 def initialize_driver():
     """ Initialize the driver for windows, and returns the driver
     """
-    # path = 'C:/Users/GMI/chromedriver.exe'
-    # driver = webdriver.Chrome(path)
-    """ 
-        if you want to download the chromedriver automatically
-        uncomment the code bellow
-    """
 
     # disable alert
     chrome_options = webdriver.ChromeOptions()
@@ -141,27 +135,6 @@ def get_shares(post):
 
     return shares
 
-# def get_reactions(post):
-#     """ Scrap the reactions of the current post, and returns the number of reactions.
-#     """
-#     reactions = 0
-#     # try:
-#     #     # total_reactions = post.find_element(By.CSS_SELECTOR, 'span.pcp91wgn')
-#     #     # reactions = total_reactions.get_attribute("textContent")
-#     # except Exception as e:
-#     #     print(e)
-#     return reactions
-
-
-# def get_time(post):
-#     """ get the posted time of the current post, and returns it
-#     """
-#
-#     element = post.find_element(By.CSS_SELECTOR, "a.gpro0wi8.b1v8xokw")
-#     posted_time = element.get_attribute('textContent')
-#     return posted_time
-#
-
 def get_images(post):
     """ Scrap all the images of the current post,
      and returns the links of all images of the current post.
@@ -188,14 +161,3 @@ def get_link_video(post):
     return text
 
 
-# def check_page_exists(name: str) -> bool:
-#     """ Check if a facebook page exists or not using the facebook graph.
-#     """
-#
-#     url = "https://graph.facebook.com/" + name
-#     response = requests.get(url)
-#
-#     if response.text.find("Unsupported get request") == -1:
-#         return True
-#     else:
-#         return False
