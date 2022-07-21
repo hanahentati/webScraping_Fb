@@ -33,7 +33,7 @@ async def form_post(request: Request, name: str = Form(...)):
             json_object = json.dumps(docs)
             with open("scrapped_data.json", "w") as outfile:
                 outfile.write(json_object)
-            print(json_object)
+            # print(json_object)
             # for more clarity it's displayed in a table
         return templates.TemplateResponse('scrapped_data.html', context={'request': request, 'title': name, 'posts': docs})
 

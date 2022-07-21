@@ -7,6 +7,7 @@ from tqdm import tqdm
 import numpy as np
 import urllib.parse
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
@@ -42,9 +43,7 @@ def initialize_driver():
     button = WebDriverWait(driver, 2).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button[type='submit']"))).click()
 
     # We are logged in!
-    # clear_button = driver.find_element(By.XPATH, "//div[@aria-label='Leave a comment'][@role='button']")
-    # driver.execute_script("arguments[0].click();", clear_button)
-    commbutton = WebDriverWait(driver, 2).until(EC.element_to_be_clickable((By.XPATH, "//div[@aria-label='Leave a comment'][@role='button']"))).click()
+
 
 
     return driver
@@ -71,9 +70,19 @@ def scroll(driver):
             print(f"Scrolling stopped! {e}")
 
 def see_more_comment(driver):
-    elemt = driver.find_element(By.CSS_SELECTOR,'div.tvfksri0.ozuftl9m')
-    clear_button = elemt.find_element(By.XPATH, "//div[@id='jsc_c_28h'][@role='button']")
+
+    clear_button = driver.find_element(By.XPATH, "//div[@aria-label='Leave a comment'][@role='button']")
     driver.execute_script("arguments[0].click();", clear_button)
+    time.sleep(100)
+    more_comments = driver.find_element(By.CSS_SELECTOR,"div.j83agx80.buofh1pr.jklb3kyz.l9j0dhe7")
+    for coment in more_comments:
+        text = coment.get_attribute('textContent')
+        if "more comments" in text:
+            clear_button = driver.find_element(By.XPATH, "//div[@role='button']")
+            driver.execute_script("arguments[0].click();", clear_button)
+            time.sleep(100)
+
+
 
 
 def get_text(post):
@@ -95,12 +104,9 @@ def get_fullcomments(post):
 
         link = post.find_element(By.CSS_SELECTOR, 'div.ecm0bbzt.e5nlhep0.a8c37x1j')
         text = link.get_attribute('textContent')
-        print("------------------")
-        print(text)
+
         comments.append(text)
 
-        print(comments)
-        print("*****************")
     except:
         text = None
     return comments
