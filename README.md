@@ -15,7 +15,5 @@ to install all dependencies
 To start the app locally:
 - uvicorn main:app --reload
 
-in the utils.py if you have the chromedriver install in your device just change the path in the function 
-initialize_driver():
-else you can download the chromedriver automatically using the code just uncomment the code in comment 
-it will also Check if the current version of chromedriver exists
+in the ** utils.py ** if you have the chromedriver install in your device just change the path in the function 
+** initialize_driver(): **
