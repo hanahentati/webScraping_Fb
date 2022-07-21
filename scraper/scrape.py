@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 
 
 class FacebookScrapping:
-    """A class used to represent a single page scraper."""
+    """A class used to represent a pages scraper."""
 
     def __init__(self, page_name: str):
         """
