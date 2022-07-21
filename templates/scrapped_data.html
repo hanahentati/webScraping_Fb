@@ -13,19 +13,23 @@
           <div class="cell">
             content
           </div>
-          <div class="cell">
-            posted_on
-          </div>
+<!--          <div class="cell">-->
+<!--            posted_on-->
+<!--          </div>-->
+
           <div class="cell">
             shares_count
           </div>
          <div class="cell">
             comments_count
           </div>
-
-          <div class="cell">
-            reaction_count
+             <div class="cell">
+            full_comment
           </div>
+
+<!--          <div class="cell">-->
+<!--            reaction_count-->
+<!--          </div>-->
 
           <div class="cell">
             video
@@ -40,18 +44,26 @@
           <div class="cell" data-title="content">
             {{ post.content }}
           </div>
-          <div class="cell" data-title="posted_on">
-            {{ post.posted_on }}
-          </div>
+<!--          <div class="cell" data-title="posted_on">-->
+<!--            {{ post.posted_on }}-->
+<!--          </div>-->
           <div class="cell" data-title="shares_count">
               {{ post.shares_count }}
           </div>
           <div class="cell" data-title="comments_count">
             {{ post.comments_count }}
           </div>
-          <div class="cell" data-title="reaction_count">
-            {{ post.reaction_count }}
+          <div class="cell" data-title="full_comment">
+               {% for item in post.full_comment %}
+                  <tr class="cell" >
+                     {{item}}
+                  </tr>
+               {% endfor %}
+<!--            {{ post.full_comment }}-->
           </div>
+<!--          <div class="cell" data-title="reaction_count">-->
+<!--            {{ post.reaction_count }}-->
+<!--          </div>-->
 
           <div class="cell" data-title="video_link">
             {{ post.video }}

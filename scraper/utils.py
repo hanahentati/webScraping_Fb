@@ -2,12 +2,13 @@
 import re
 import requests
 import time
-import chromedriver_autoinstaller
+
 from tqdm import tqdm
 import numpy as np
-
+import urllib.parse
 from selenium import webdriver
-
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
 
@@ -15,25 +16,50 @@ from selenium.webdriver.common.by import By
 def initialize_driver():
     """ Initialize the driver for windows, and returns the driver
     """
-    path = 'C:/Users/GMI/chromedriver.exe'
-    driver = webdriver.Chrome(path)
+    # path = 'C:/Users/GMI/chromedriver.exe'
+    # driver = webdriver.Chrome(path)
     """ 
         if you want to download the chromedriver automatically
         uncomment the code bellow
     """
-    # chromedriver_autoinstaller.install()  # Check if the current version of chromedriver exists
-    # # and if it doesn't exist, download it automatically,
-    # # then add chromedriver to path
-    #
-    # driver = webdriver.Chrome()
-    # driver.get("http://www.python.org")
-    # assert "Python" in driver.title
+
+    # disable alert
+    chrome_options = webdriver.ChromeOptions()
+    prefs = {"profile.default_content_setting_values.notifications": 2}
+    chrome_options.add_experimental_option("prefs", prefs)
+
+    # specify the path to chromedriver.exe (download and save on your computer)
+    driver = webdriver.Chrome('C:/Users/GMI/chromedriver.exe', chrome_options=chrome_options)
+    driver.maximize_window()
+    # open the webpage
+    driver.get("http://www.facebook.com")
+
+    # target username
+    username = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "input[name='email']")))
+    password = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "input[name='pass']")))
+
+    # enter username and password
+    username.clear()
+    username.send_keys("hentati.hana.dev@gmail.com")
+    password.clear()
+    password.send_keys("bayawamaidsama1397441")
+
+    # target the login button and click it
+    button = WebDriverWait(driver, 2).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button[type='submit']"))).click()
+
+    # We are logged in!
+    # clear_button = driver.find_element(By.XPATH, "//div[@aria-label='Leave a comment'][@role='button']")
+    # driver.execute_script("arguments[0].click();", clear_button)
+    commbutton = WebDriverWait(driver, 2).until(EC.element_to_be_clickable((By.XPATH, "//div[@aria-label='Leave a comment'][@role='button']"))).click()
+
+
     return driver
 def get_full_path(name: str) -> str:
     """ Get the full URL of a facebook page, and returns the full URL of a facebook page corresponding
     to the name.
     """
-    return "https://facebook.com/{}".format(name)
+
+    return "https://www.facebook.com/search/" + "posts" + "/?q="+name
 
 
 
@@ -50,6 +76,10 @@ def scroll(driver):
         except Exception as e:
             print(f"Scrolling stopped! {e}")
 
+def see_more_comment(driver):
+    elemt = driver.find_element(By.CSS_SELECTOR,'div.tvfksri0.ozuftl9m')
+    clear_button = elemt.find_element(By.XPATH, "//div[@id='jsc_c_28h'][@role='button']")
+    driver.execute_script("arguments[0].click();", clear_button)
 
 
 def get_text(post):
@@ -64,6 +94,23 @@ def get_text(post):
         text = None
     return text
 
+def get_fullcomments(post):
+
+    comments = []
+    try:
+
+        link = post.find_element(By.CSS_SELECTOR, 'div.ecm0bbzt.e5nlhep0.a8c37x1j')
+        text = link.get_attribute('textContent')
+        print("------------------")
+        print(text)
+        comments.append(text)
+
+        print(comments)
+        print("*****************")
+    except:
+        text = None
+    return comments
+
 
 def get_comments(post):
     """ Scrap the number of comments in the current post, and returns the number of comments.
@@ -74,7 +121,7 @@ def get_comments(post):
     for element in elements:
         text = element.get_attribute("textContent")
 
-        if "commentaires" in text:
+        if "comments" in text:
             comments = int(re.findall("\d+", text)[0])
 
     return comments
@@ -89,31 +136,31 @@ def get_shares(post):
 
     for element in elements:
         text = element.get_attribute("textContent")
-        if "partages" in text:
+        if "shares" in text:
             shares = int(re.findall("\d+", text)[0])
 
     return shares
 
-def get_reactions(post):
-    """ Scrap the reactions of the current post, and returns the number of reactions.
-    """
-    reactions = 0
-    try:
-        total_reactions = post.find_element(By.CSS_SELECTOR, 'span.pcp91wgn')
-        reactions = total_reactions.get_attribute("textContent")
-    except Exception as e:
-        print(e)
-    return reactions
+# def get_reactions(post):
+#     """ Scrap the reactions of the current post, and returns the number of reactions.
+#     """
+#     reactions = 0
+#     # try:
+#     #     # total_reactions = post.find_element(By.CSS_SELECTOR, 'span.pcp91wgn')
+#     #     # reactions = total_reactions.get_attribute("textContent")
+#     # except Exception as e:
+#     #     print(e)
+#     return reactions
 
 
-def get_time(post):
-    """ get the posted time of the current post, and returns it
-    """
-
-    element = post.find_element(By.CSS_SELECTOR, "a.gpro0wi8.b1v8xokw")
-    posted_time = element.get_attribute('textContent')
-    return posted_time
-
+# def get_time(post):
+#     """ get the posted time of the current post, and returns it
+#     """
+#
+#     element = post.find_element(By.CSS_SELECTOR, "a.gpro0wi8.b1v8xokw")
+#     posted_time = element.get_attribute('textContent')
+#     return posted_time
+#
 
 def get_images(post):
     """ Scrap all the images of the current post,
@@ -141,14 +188,14 @@ def get_link_video(post):
     return text
 
 
-def check_page_exists(name: str) -> bool:
-    """ Check if a facebook page exists or not using the facebook graph.
-    """
-
-    url = "https://graph.facebook.com/" + name
-    response = requests.get(url)
-
-    if response.text.find("Unsupported get request") == -1:
-        return True
-    else:
-        return False
+# def check_page_exists(name: str) -> bool:
+#     """ Check if a facebook page exists or not using the facebook graph.
+#     """
+#
+#     url = "https://graph.facebook.com/" + name
+#     response = requests.get(url)
+#
+#     if response.text.find("Unsupported get request") == -1:
+#         return True
+#     else:
+#         return False

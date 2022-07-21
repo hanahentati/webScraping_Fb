@@ -17,11 +17,7 @@ def form_post(request: Request):
 
 @router.post("/")
 async def form_post(request: Request, name: str = Form(...)):
-    result = check_page_exists(name)
-    if not result:
-        return templates.TemplateResponse('first_page.html', context={'request': request, 'result': "this page doesn't exist "
-                                                                                              "named {}".format(name),'title': name})
-    else:
+
         fb_scrapping = FacebookScrapping(name)
         fb_scrapping.init_driver()
 
@@ -37,9 +33,9 @@ async def form_post(request: Request, name: str = Form(...)):
             docs.append(doc)
             #save the data into a json file
             json_object = json.dumps(docs)
-            with open("scrapped_data.json", "w") as outfile:
-                outfile.write(json_object)
-            print(json_object)
+            # with open("scrapped_data.json", "w") as outfile:
+            #     outfile.write(json_object)
+            # print(json_object)
             #for more clarity it's displayed in a table
         return templates.TemplateResponse('scrapped_data.html', context={'request': request, 'title': name, 'posts': docs})
 

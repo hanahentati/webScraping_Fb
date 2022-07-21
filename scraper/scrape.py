@@ -21,6 +21,7 @@ class FacebookScrapping:
         self.driver = initialize_driver()
         self.driver.get(self.URL)
         scroll(self.driver)
+        see_more_comment(self.driver)
 
     def scrape_data(self):
         """ Function to scrap all the posts of the current facebook page opened by the driver.
@@ -36,17 +37,19 @@ class FacebookScrapping:
             video = get_link_video(post)
             comments = get_comments(post)
             shares = get_shares(post)
-            total_reactions = get_reactions(post)
-            posted_time_of_cp = get_time(post)
+            # total_reactions = get_reactions(post)
+            # posted_time_of_cp = get_time(post)
+            full_comment= get_fullcomments(post)
             images = get_images(post)
 
             data[id] = {
                 "page_name": self.page_name,
                 "shares_count": shares,
                 "comments_count": comments,
-                "reaction_count": total_reactions,
+                # "reaction_count": total_reactions,
                 "content": text,
-                "posted_on": posted_time_of_cp,
+                # "posted_on": posted_time_of_cp,
+                "full_comment": full_comment,
                 "video_link": video,
                 "image": images,
             }
